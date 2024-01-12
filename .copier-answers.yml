@@ -1,0 +1,11 @@
+# Do not edit - changes here will be overwritten by Copier
+_commit: v0.1.2
+_src_path: gh:fractal-analytics-platform/fractal-tasks-template
+author_email: st.flurin@gmail.com
+author_name: Flurin Sturzenegger
+package_name: fractal_imagexpress
+project_name: fractal-ImageXpress
+project_short_description: Convert ImageXpress data to OME-ZARR, using the faim-hcs
+    package.
+project_url: ''
+
