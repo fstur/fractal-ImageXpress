@@ -1,12 +1,7 @@
 import json
-import sys
-import typing
 from pathlib import Path
-from typing import Optional
-from typing import Union
 
 import pytest
-from devtools import debug
 from jsonschema.validators import Draft201909Validator
 from jsonschema.validators import Draft202012Validator
 from jsonschema.validators import Draft7Validator
@@ -19,9 +14,7 @@ from fractal_tasks_core.dev.lib_signature_constraints import (
     _validate_function_signature,
 )
 
-from . import MANIFEST
 from . import TASK_LIST
-
 
 
 def test_task_functions_have_valid_signatures():
@@ -31,8 +24,8 @@ def test_task_functions_have_valid_signatures():
     for ind_task, task in enumerate(TASK_LIST):
         function_name = Path(task["executable"]).with_suffix("").name
         task_function = _extract_function(
-                task["executable"], function_name, package_name="fractal_imagexpress"
-                )
+            task["executable"], function_name, package_name="fractal_imagexpress"
+        )
         _validate_function_signature(task_function)
 
 
@@ -44,8 +37,8 @@ def test_args_schemas_are_up_to_date():
         print(f"Now handling {task['executable']}")
         old_schema = TASK_LIST[ind_task]["args_schema"]
         new_schema = create_schema_for_single_task(
-                task["executable"], package="fractal_imagexpress"
-                )
+            task["executable"], package="fractal_imagexpress"
+        )
         # The following step is required because some arguments may have a
         # default which has a non-JSON type (e.g. a tuple), which we need to
         # convert to JSON type (i.e. an array) before comparison.

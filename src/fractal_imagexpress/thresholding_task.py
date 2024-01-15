@@ -6,13 +6,13 @@ import logging
 from typing import Any
 from pathlib import Path
 
-import zarr
 import dask.array as da
 
 from pydantic.decorator import validate_arguments
 
-from fractal_tasks_core.lib_ngff import load_NgffImageMeta
-from fractal_tasks_core.lib_pyramid_creation import build_pyramid
+from fractal_tasks_core.ngff import load_NgffImageMeta
+from fractal_tasks_core.pyramids import build_pyramid
+
 
 @validate_arguments
 def thresholding_task(
@@ -47,9 +47,15 @@ def thresholding_task(
     ngff_image_meta = load_NgffImageMeta(input_path)
     logging.info(f"  Axes: {ngff_image_meta.axes_names}")
     logging.info(f"  Number of pyramid levels: {ngff_image_meta.num_levels}")
-    logging.info(f"  Linear coarsening factor for YX axes: {ngff_image_meta.coarsening_xy}")
-    logging.info(f"  Full-resolution ZYX pixel sizes (micrometer):    {ngff_image_meta.get_pixel_sizes_zyx(level=0)}")
-    logging.info(f"  Coarsening-level-1 ZYX pixel sizes (micrometer): {ngff_image_meta.get_pixel_sizes_zyx(level=1)}")
+    logging.info(
+        f"  Linear coarsening factor for YX axes: {ngff_image_meta.coarsening_xy}"
+    )
+    logging.info(
+        f"  Full-resolution ZYX pixel sizes (micrometer):    {ngff_image_meta.get_pixel_sizes_zyx(level=0)}"
+    )
+    logging.info(
+        f"  Coarsening-level-1 ZYX pixel sizes (micrometer): {ngff_image_meta.get_pixel_sizes_zyx(level=1)}"
+    )
 
     # Load the highest-resolution multiscale array through dask.array
     array_czyx = da.from_zarr(f"{input_path}/0")
